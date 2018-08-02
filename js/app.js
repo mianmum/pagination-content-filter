@@ -17,7 +17,7 @@ const showPage = (pageNumber, studentList) => {
 //  BUILD FUNCTION TO APPEND PAGES
 //  Task One: determine total number of pages needed, depending on number of items (10 per page)
 const determine = students => {
-  const total = Math.floor((students.length / 10) + 1);
+  const total = Math.ceil(students.length / 10);
   return total;
 };
 //  Task Two: create a page link section
@@ -26,7 +26,7 @@ const $ul = $(`<ul></ul>`);
 const createSection = () => {
   dynamicSection = $($div).append($ul);
   return dynamicSection;
-};
+};111
 //  Task Three: add a page link for every needed page to the section
 const addPageLinks = numberOfPages => {
   for (let i = 1; i <= numberOfPages; i++) {
@@ -58,8 +58,8 @@ const appendPageLinks = studentList => {
   createSection();
   removeLI($ul);
   addPageLinks(total);
-  removeSection($div);
-  addSection($pageDiv, dynamicSection);
+  $($div).remove();
+  $($pageDiv).append(dynamicSection);
   addListeners($ul);
 };
 // call appendPageLinks function
@@ -101,19 +101,16 @@ const filter = (studentList, studentNames, inputValue) => {
   };
 };
 // search button listener
+$($pageHeader).append($searchBar);
 const searchListener = searchSection => {
   $(searchSection).on('click', 'button', () => {
-    removeSection($error);
+    $($error).remove();
     filter($list, h3, $('input').val().toUpperCase());
     if (results.length === 0) {
-      removeSection($div);
-      addSection($pageDiv, $error);
+      $($div).remove();
+      $($pageDiv).append($error);
     };
   });
 };
 // add search bar
-const addSearch = () => {
-  addSection($pageHeader, $searchBar);
-  searchListener($searchBar);
-};
-addSearch();
+searchListener($searchBar);
